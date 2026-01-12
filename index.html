@@ -6,93 +6,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-  height:100vh;
-  background:url('bg.jpg') center/cover no-repeat;
-  font-family:system-ui,Segoe UI,sans-serif;
-  overflow:hidden;
-}
-.overlay{position:absolute;inset:0;background:rgba(0,0,0,.75);}
-.screen{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
-  text-align:center;color:white;padding:20px;
-  cursor:pointer;
-}
-/* Cake + Candle */
-#cake{
-  font-size:100px;position:relative;
-  animation:pulse 1.5s infinite alternate;
-  transition:0.3s all;
-}
-#cake:hover{transform:scale(1.1);}
-@keyframes pulse{0%{transform:scale(1)}100%{transform:scale(1.05)}}
-#flame{
-  position:absolute;top:0;left:50%;
-  transform:translateX(-50%);
-  font-size:40px;
-  animation:flicker 1s infinite;
-  filter:drop-shadow(0 0 12px orange);
-}
-#smoke{font-size:50px;opacity:0;animation:smoke 2s forwards;margin-top:20px;}
-#hint{font-size:14px;opacity:.8;margin-top:12px;}
-/* Button fallback */
-#blowBtn{
-  padding:12px 22px;margin-top:20px;
-  font-size:18px;
-  background:orange;
-  border:none;border-radius:12px;
-  cursor:pointer;color:white;font-weight:bold;
-  box-shadow:0 0 15px rgba(255,165,0,0.7);
-  transition:0.3s;
-}
-#blowBtn:hover{transform:scale(1.05);}
-/* Sparkles / Petals */
-.sparkle{
-  position:absolute;font-size:18px;
-  animation:sparkleMove 2s forwards;pointer-events:none;
-}
-@keyframes sparkleMove{0%{opacity:1;transform:translateY(0px) rotate(0deg);}100%{opacity:0;transform:translateY(-150px) rotate(360deg);}}
-/* Slideshow */
-#photo{
- width:min(320px,85vw);
- border-radius:22px;
- box-shadow:0 0 35px rgba(255,105,180,.5);
- margin-bottom:10px;
-}
+body{height:100vh;background:url('bg.jpg') center/cover no-repeat;font-family:system-ui,Segoe UI,sans-serif;overflow:hidden;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:white;padding:20px;}
+button#startBtn{padding:15px 30px;font-size:24px;border:none;border-radius:12px;background:orange;color:white;cursor:pointer;box-shadow:0 0 20px rgba(255,165,0,0.7);transition:0.3s;}
+button#startBtn:hover{transform:scale(1.05);}
+#photo{width:min(320px,85vw);border-radius:22px;box-shadow:0 0 35px rgba(255,105,180,.5);margin-bottom:10px;}
 #quote{font-size:clamp(18px,4.5vw,26px);line-height:1.3;opacity:.9;max-width:90%;}
 #lyric{font-size:clamp(16px,4vw,22px);color:#FFD700;margin-top:8px;opacity:1;}
 .word{opacity:0;display:inline-block;margin-right:4px;transition:0.4s;transform:translateY(20px);}
 .word.show{opacity:1;transform:translateY(0);}
-#memories{
- display:none;position:absolute;inset:0;z-index:5;padding:20px;
- display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;
-}
+.sparkle{position:absolute;font-size:18px;animation:sparkleMove 2s forwards;pointer-events:none;}
+@keyframes sparkleMove{0%{opacity:1;transform:translateY(0px) rotate(0deg);}100%{opacity:0;transform:translateY(-150px) rotate(360deg);}}
+#memories{display:none;position:absolute;inset:0;z-index:5;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;}
 #memories img{width:100%;border-radius:14px;animation:flash 1.2s ease forwards;}
-/* Animations */
-@keyframes flicker{0%,100%{opacity:1}50%{opacity:.6}}
-@keyframes smoke{0%{opacity:1}100%{opacity:0;transform:translateY(-80px)}}
+@keyframes flash{0%{opacity:0;transform:scale(.5)}50%{opacity:1}100%{opacity:0;transform:scale(1.1)}}
 .zoom{animation:zoom 4.5s forwards}.slide{animation:slide 4.5s forwards}.rotate{animation:rotate 4.5s forwards}.flip{animation:flip 4.5s forwards}.fadeOut{animation:fadeOut 1s forwards}
 @keyframes zoom{from{transform:scale(1.3)}to{transform:scale(1)}}@keyframes slide{from{transform:translateX(-120%)}to{transform:none}}
 @keyframes rotate{from{transform:rotate(-10deg) scale(.8)}to{transform:none}}@keyframes flip{from{transform:rotateY(90deg)}to{transform:none}}
-@keyframes fadeOut{to{opacity:0}}@keyframes flash{0%{opacity:0;transform:scale(.5)}50%{opacity:1}100%{opacity:0;transform:scale(1.1)}}
+@keyframes fadeOut{to{opacity:0}}
 </style>
 </head>
 <body>
 
-<div class="overlay"></div>
-
-<!-- Cake Screen -->
-<div class="screen" id="cakeScreen">
- <h2>Make a wish 🎂</h2>
- <div id="cake">🎂<span id="flame">🕯️</span></div>
- <div id="smoke">💨</div>
- <div id="hint">Click anywhere to blow the candle</div>
- <button id="blowBtn">🎂 Blow the Candle</button>
+<!-- Start Screen -->
+<div class="screen" id="startScreen">
+ <h1>🎉 Happy Birthday Madhumitha 🎉</h1>
+ <button id="startBtn">Start Birthday Surprise</button>
 </div>
 
-<!-- Slideshow -->
+<!-- Main Slideshow -->
 <div class="screen" id="main" style="display:none">
  <img id="photo">
  <div id="quote"></div>
@@ -105,40 +47,30 @@ body{
 <audio id="music" src="song.mp3"></audio>
 
 <script>
-// Slides + Lyrics + word timings (seconds)
+// Slides + lyrics + estimated word timings
 const slides=[
- {img:"pic1.jpg",text:"Happy Birthday Madhumitha 🎂❤️",words:["En","iniya","madham..."],wordTimes:[0,0.5,1],anim:"zoom"},
- {img:"pic2.jpg",text:"Nee irukkum podhu ellam azhaga irukku ✨",words:["Un","sirippu","en","manasa","thodudhu"],wordTimes:[0,0.4,0.8,1.2,1.6],anim:"slide"},
- {img:"pic3.jpg",text:"Indha Madhumitha Love Theme… unakkaga 🎶",words:["Uyire","uyire","madhumitha"],wordTimes:[0,0.5,1],anim:"rotate"},
- {img:"pic4.jpg",text:"Un sirippu en manasa thodudhu 💖",words:["Un","kadhal","enakku","thevai"],wordTimes:[0,0.5,1,1.5],anim:"flip"},
- {img:"pic5.jpg",text:"May your life always bloom 🌸",words:["Poove","poove","madhumitha"],wordTimes:[0,0.5,1],anim:"zoom"},
- {img:"pic6.jpg",text:"You make every moment special ❤️",words:["En","manadhil","un","vizhiyin","oligal"],wordTimes:[0,0.5,1,1.5,2],anim:"slide"},
- {img:"pic7.jpg",text:"Always stay this beautiful ✨",words:["Endrum","azhaga","iru","madhumitha"],wordTimes:[0,0.5,1,1.5],anim:"rotate"}
+ {img:"pic1.jpg",text:"Happy Birthday Madhumitha 🎂❤️", words:["En","iniya","madham..."], wordTimes:[0,0.5,1], anim:"zoom"},
+ {img:"pic2.jpg",text:"Nee irukkum podhu ellam azhaga irukku ✨", words:["Un","sirippu","en","manasa","thodudhu"], wordTimes:[0,0.4,0.8,1.2,1.6], anim:"slide"},
+ {img:"pic3.jpg",text:"Indha Madhumitha Love Theme… unakkaga 🎶", words:["Uyire","uyire","madhumitha"], wordTimes:[0,0.5,1], anim:"rotate"},
+ {img:"pic4.jpg",text:"Un sirippu en manasa thodudhu 💖", words:["Un","kadhal","enakku","thevai"], wordTimes:[0,0.5,1,1.5], anim:"flip"},
+ {img:"pic5.jpg",text:"May your life always bloom 🌸", words:["Poove","poove","madhumitha"], wordTimes:[0,0.5,1], anim:"zoom"},
+ {img:"pic6.jpg",text:"You make every moment special ❤️", words:["En","manadhil","un","vizhiyin","oligal"], wordTimes:[0,0.5,1,1.5,2], anim:"slide"},
+ {img:"pic7.jpg",text:"Always stay this beautiful ✨", words:["Endrum","azhaga","iru","madhumitha"], wordTimes:[0,0.5,1,1.5], anim:"rotate"}
 ];
 
-const flame=document.getElementById("flame");
-const smoke=document.getElementById("smoke");
-const cakeScreen=document.getElementById("cakeScreen");
+const startBtn=document.getElementById("startBtn");
+const startScreen=document.getElementById("startScreen");
 const main=document.getElementById("main");
 const photo=document.getElementById("photo");
 const quote=document.getElementById("quote");
 const lyric=document.getElementById("lyric");
-const music=document.getElementById("music");
 const memories=document.getElementById("memories");
-const blowBtn=document.getElementById("blowBtn");
+const music=document.getElementById("music");
 
 let slideIndex=0;
 let wordTimeouts=[];
 
-// Trigger candle blow
-function triggerBlow(){
- flame.style.display="none";
- smoke.style.opacity=1;
- createSparkles(15);
- setTimeout(()=>{cakeScreen.style.display="none"; startShow();},1500);
-}
-
-// Sparkles
+// Sparkles function
 function createSparkles(num){
  for(let i=0;i<num;i++){
   const s=document.createElement("div");
@@ -153,18 +85,16 @@ function createSparkles(num){
  }
 }
 
-// Event listeners
-cakeScreen.addEventListener("click", triggerBlow);
-blowBtn.addEventListener("click", triggerBlow);
-
-// Start slideshow
-function startShow(){
+// Start button click
+startBtn.addEventListener("click", ()=>{
+ startScreen.style.display="none";
+ createSparkles(20);
  main.style.display="flex";
  music.play();
  showSlide();
-}
+});
 
-// Show one slide with word-by-word lyric
+// Show slides with word-by-word lyrics
 function showSlide(){
  if(slideIndex>=slides.length){setTimeout(showMemories,1000); return;}
  const s = slides[slideIndex];
@@ -183,7 +113,7 @@ function showSlide(){
    wordTimeouts.push(t);
  });
 
- setTimeout(()=>{photo.className="fadeOut"}, 4000);
+ setTimeout(()=>{photo.className="fadeOut"},4000);
  slideIndex++;
  setTimeout(showSlide,4500);
 }
@@ -206,12 +136,8 @@ function showMemories(){
 function showFinal(){
  document.body.innerHTML=`
   <div class="screen">
-   <h1 style="font-size:clamp(28px,6vw,42px)">
-    Happy Birthday Madhumitha ❤️🎂
-   </h1>
-   <p style="opacity:.8;margin-top:10px">
-    You will always be special ✨
-   </p>
+   <h1 style="font-size:clamp(28px,6vw,42px)">Happy Birthday Madhumitha ❤️🎂</h1>
+   <p style="opacity:.8;margin-top:10px">You will always be special ✨</p>
   </div>
  `;
 }
