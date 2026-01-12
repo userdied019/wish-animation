@@ -2,189 +2,141 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Birthday Surprise ❤️</title>
+<title>Create Birthday Surprise 🎁</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 body{
- font-family:system-ui,Segoe UI,sans-serif;
- background:linear-gradient(135deg,#ff9a9e,#fad0c4);
- min-height:100vh;
- overflow:hidden;
+  font-family:system-ui,Segoe UI,sans-serif;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  margin:0;
+  padding:20px;
 }
-.hidden{display:none}
+h1{text-align:center;color:#fff;margin-bottom:10px;}
+p{text-align:center;color:#fff;margin-bottom:30px;}
 
-/* ---------- CREATE ---------- */
-#create{padding:20px}
-#create h1,#create p{text-align:center;color:#fff}
 .form{
- max-width:620px;margin:auto;background:#fff;
- border-radius:18px;padding:20px;
- box-shadow:0 15px 40px rgba(0,0,0,.2)
+  max-width:600px;
+  margin:auto;
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
-.memory{margin-bottom:18px}
-.memory label{font-weight:600}
-.memory input,.memory textarea{width:100%;margin-top:6px}
+
+.memory{
+  margin-bottom:20px;
+}
+
+.memory label{
+  font-weight:600;
+  display:block;
+  margin-bottom:6px;
+}
+
+.memory input[type="file"]{
+  width:100%;
+}
+
 .memory textarea{
- padding:10px;border-radius:10px;
- border:1px solid #ccc;resize:none
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  resize:none;
+  font-size:14px;
 }
+
 button{
- width:100%;padding:14px;border:none;
- border-radius:14px;background:#ff4d6d;
- color:#fff;font-size:18px;cursor:pointer
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#ff4d6d;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  margin-top:10px;
 }
-
-/* ---------- SURPRISE ---------- */
-#surprise{
- position:fixed;inset:0;
- display:flex;flex-direction:column;
- align-items:center;justify-content:center;
- color:#fff;text-align:center;
- animation:pulse 2s infinite;
-}
-@keyframes pulse{
- 0%{background:rgba(255,154,158,.15)}
- 50%{background:rgba(255,77,109,.25)}
- 100%{background:rgba(255,154,158,.15)}
-}
-
-#photo{
- width:min(85vw,320px);
- border-radius:22px;
- box-shadow:0 0 35px rgba(255,105,180,.6);
- opacity:0;transition:opacity 1s
-}
-#message{
- margin-top:14px;
- font-size:clamp(16px,4vw,22px);
- max-width:90%;
- opacity:0;transition:opacity 1s
-}
-
-@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.08)}}
-@keyframes pan{from{transform:translateX(-4%) scale(1)}to{transform:translateX(4%) scale(1.06)}}
-.zoom{animation:zoom 5s forwards}
-.pan{animation:pan 5s forwards}
-
-/* ---------- HEART MEMORIES ---------- */
-#memories{position:absolute;inset:0;display:none}
-.mem{
- position:absolute;width:90px;
- border-radius:14px;
- opacity:0;transition:1.2s
-}
-
-/* ---------- FINAL ---------- */
-#final{
- position:absolute;inset:0;
- display:flex;flex-direction:column;
- justify-content:center;align-items:center;
- background:rgba(0,0,0,.6);
- opacity:0;transition:2s
-}
+button:hover{opacity:0.9}
 </style>
 </head>
 <body>
 
-<!-- CREATE -->
-<div id="create">
-<h1>🎁 Create Birthday Surprise</h1>
-<p>7 memories • 7 messages • one emotion ❤️</p>
+<h1>🎂 Create a Birthday Surprise</h1>
+<p>Upload memories & write a message for each 💖</p>
+
 <div class="form">
-<form id="form">
-<div class="memory"><label>Memory 1</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 2</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 3</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 4</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 5</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 6</label><input type="file" required><textarea required></textarea></div>
-<div class="memory"><label>Memory 7</label><input type="file" required><textarea required></textarea></div>
-<button>Create Surprise ✨</button>
-</form>
-</div>
-</div>
+  <form id="createForm">
 
-<!-- SURPRISE -->
-<div id="surprise" class="hidden">
-<img id="photo">
-<div id="message"></div>
-<div id="memories"></div>
-<div id="final">
-<h1>Happy Birthday ❤️</h1>
-<p>You are always special ✨</p>
-</div>
-</div>
+    <!-- 7 Memories -->
+    <div class="memory">
+      <label>Memory 1</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
 
-<audio id="music" src="song.mp3" preload="auto" playsinline></audio>
+    <div class="memory">
+      <label>Memory 2</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <div class="memory">
+      <label>Memory 3</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <div class="memory">
+      <label>Memory 4</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <div class="memory">
+      <label>Memory 5</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <div class="memory">
+      <label>Memory 6</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <div class="memory">
+      <label>Memory 7</label>
+      <input type="file" accept="image/*" required>
+      <textarea placeholder="Message for this memory ❤️" required></textarea>
+    </div>
+
+    <button type="submit">✨ Create Surprise</button>
+  </form>
+</div>
 
 <script>
-const form=document.getElementById("form");
-const create=document.getElementById("create");
-const surprise=document.getElementById("surprise");
-const photo=document.getElementById("photo");
-const message=document.getElementById("message");
-const music=document.getElementById("music");
-const memoriesDiv=document.getElementById("memories");
-const final=document.getElementById("final");
+document.getElementById("createForm").addEventListener("submit", e=>{
+  e.preventDefault();
 
-let slides=[],i=0,started=false;
+  const memories=[];
+  document.querySelectorAll(".memory").forEach(mem=>{
+    const file=mem.querySelector("input").files[0];
+    const msg=mem.querySelector("textarea").value;
 
-// collect
-form.onsubmit=e=>{
- e.preventDefault();
- let loaded=0;
- document.querySelectorAll(".memory").forEach(m=>{
-  const f=m.querySelector("input").files[0];
-  const msg=m.querySelector("textarea").value;
-  const r=new FileReader();
-  r.onload=()=>{
-   slides.push({img:r.result,msg});
-   if(++loaded===7){
-    create.classList.add("hidden");
-    surprise.classList.remove("hidden");
-   }
-  };
-  r.readAsDataURL(f);
- });
-};
-
-// auto start on first tap
-document.addEventListener("click",()=>{
- if(started) return;
- started=true;
- music.play().catch(()=>{});
- showSlide();
-},{once:true});
-
-function showSlide(){
- if(i>=slides.length){showMemories();return}
- const s=slides[i++];
- photo.src=s.img;
- message.innerText=s.msg;
- photo.style.opacity=message.style.opacity=0;
- photo.className=Math.random()<0.5?"zoom":"pan";
- setTimeout(()=>photo.style.opacity=message.style.opacity=1,200);
- setTimeout(showSlide,5000);
-}
-
-// heart layout
-function showMemories(){
- memoriesDiv.style.display="block";
- const heart=[
-  [45,20],[35,30],[55,30],
-  [30,45],[40,55],[50,55],[60,45]
- ];
- slides.forEach((s,i)=>{
-  const img=document.createElement("img");
-  img.src=s.img;img.className="mem";
-  img.style.left=heart[i][0]+"vw";
-  img.style.top=heart[i][1]+"vh";
-  memoriesDiv.appendChild(img);
-  setTimeout(()=>img.style.opacity=1,i*200);
- });
- setTimeout(()=>final.style.opacity=1,2500);
-}
+    const reader=new FileReader();
+    reader.onload=()=>{
+      memories.push({img:reader.result,message:msg});
+      if(memories.length===7){
+        sessionStorage.setItem("memories",JSON.stringify(memories));
+        window.location.href="surprise.html";
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+});
 </script>
+
 </body>
 </html>
