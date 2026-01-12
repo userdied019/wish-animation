@@ -33,21 +33,40 @@ body{height:100vh;background:url('bg.jpg') center/cover no-repeat;overflow:hidde
 /* Fade out for slide */
 .fadeOut{animation:fadeOut 1s forwards}
 @keyframes fadeOut{to{opacity:0}}
+
+/* Start screen overlay */
+#startScreen{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);color:white;
+  display:flex;justify-content:center;align-items:center;font-size:24px;
+  cursor:pointer;z-index:10;text-align:center;padding:20px;
+}
+#startScreen span{animation:blink 1.5s infinite;}
+@keyframes blink{0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
 </style>
 </head>
 <body>
 
+<!-- Start screen (auto appear) -->
+<div id="startScreen">
+  <div>
+    Tap anywhere to start the birthday surprise 🎂✨<br><span>👆</span>
+  </div>
+</div>
+
+<!-- Main Slideshow -->
 <div id="main" style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;">
  <img id="photo">
  <div id="quote"></div>
  <div id="lyric"></div>
 </div>
 
+<!-- Flash Memories -->
 <div id="memories"></div>
+
 <audio id="music" src="song.mp3"></audio>
 
 <script>
-// Slides + lyrics + timings
+// Slides + lyrics
 const slides=[
  {img:"pic1.jpg",text:"Happy Birthday Madhumitha 🎂❤️", words:["En","iniya","madham..."], wordTimes:[0,0.5,1]},
  {img:"pic2.jpg",text:"Nee irukkum podhu ellam azhaga irukku ✨", words:["Un","sirippu","en","manasa","thodudhu"], wordTimes:[0,0.4,0.8,1.2,1.6]},
@@ -64,6 +83,7 @@ const quote=document.getElementById("quote");
 const lyric=document.getElementById("lyric");
 const memories=document.getElementById("memories");
 const music=document.getElementById("music");
+const startScreen=document.getElementById("startScreen");
 
 let slideIndex=0;
 let wordTimeouts=[];
@@ -83,17 +103,14 @@ function createSparkles(num){
  }
 }
 
-// Show slide with cinematic effect
+// Show slide
 function showSlide(){
  if(slideIndex>=slides.length){setTimeout(showMemories,1000); return;}
  const s = slides[slideIndex];
  photo.src=s.img;
- photo.style.opacity=0;
- quote.style.opacity=0;
- lyric.style.opacity=0;
+ photo.style.opacity=0; quote.style.opacity=0; lyric.style.opacity=0;
 
- // fade in
- setTimeout(()=>{photo.style.opacity=1;quote.style.opacity=1;lyric.style.opacity=1;},200);
+ setTimeout(()=>{photo.style.opacity=1; quote.style.opacity=1; lyric.style.opacity=1;},200);
 
  lyric.innerHTML="";
  s.words.forEach((w,i)=>{
@@ -104,8 +121,7 @@ function showSlide(){
    wordTimeouts.push(setTimeout(()=>{span.classList.add("show");}, s.wordTimes[i]*1000));
  });
 
- // random cinematic effect
-photo.className="";
+ photo.className="";
 const effects=["zoomEffect","zoomOutEffect","panLeftEffect","panRightEffect"];
 photo.classList.add(effects[Math.floor(Math.random()*effects.length)]);
 
@@ -125,32 +141,31 @@ function showMemories(){
    img.className="memoryImg";
    img.style.left=Math.random()*70 + "vw";
    img.style.top=Math.random()*60 + "vh";
-   img.style.transform=`scale(0.5) rotate(${Math.random()*30-15}deg)`;
+   img.style.transform=`scale(0.5) rotate(${Math.random()*0-0}deg)`;
    memories.appendChild(img);
    setTimeout(()=>{img.style.opacity=1; img.style.transform=`scale(1) rotate(${Math.random()*20-10}deg)`;}, i*300);
  });
  setTimeout(showFinal, slides.length*300+1500);
 }
 
-// Final birthday message
+// Final message
 function showFinal(){
  document.body.innerHTML=`
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;color:white;text-align:center;">
    <h1 style="font-size:clamp(28px,6vw,42px);opacity:0;animation:fadeInFinal 2s forwards;">Happy Birthday Madhumitha ❤️🎂</h1>
    <p style="opacity:0;margin-top:10px;animation:fadeInFinal 2s 1s forwards;">You will always be special ✨</p>
   </div>
-  <style>
-   @keyframes fadeInFinal{to{opacity:1;}}
-  </style>
+  <style>@keyframes fadeInFinal{to{opacity:1;}}</style>
  `;
 }
 
-// Auto-start
-window.addEventListener("load",()=>{
- document.body.style.opacity=1;
- createSparkles(20);
- music.play().catch(()=>{});
- showSlide();
+// Start interaction
+startScreen.addEventListener("click", ()=>{
+  startScreen.style.display="none";
+  music.play().catch(()=>{});
+  document.body.style.opacity=1;
+  createSparkles(20);
+  showSlide();
 });
 </script>
 </body>
