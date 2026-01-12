@@ -2,141 +2,171 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Create Birthday Surprise 🎁</title>
+<title>Happy Birthday Madhumitha ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{
-  font-family:system-ui,Segoe UI,sans-serif;
-  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-  margin:0;
-  padding:20px;
-}
-h1{text-align:center;color:#fff;margin-bottom:10px;}
-p{text-align:center;color:#fff;margin-bottom:30px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{height:100vh;background:url('bg.jpg') center/cover no-repeat;overflow:hidden;font-family:system-ui,Segoe UI,sans-serif;opacity:0;transition:opacity 2s;}
+#photo{width:min(320px,85vw);border-radius:22px;box-shadow:0 0 35px rgba(255,105,180,.5);margin-bottom:10px;transition:all 0.8s ease;opacity:0;}
+#quote{font-size:clamp(18px,4.5vw,26px);line-height:1.3;opacity:0;max-width:90%;text-align:center;margin-bottom:6px;transition:opacity 1s;}
+#lyric{font-size:clamp(16px,4vw,22px);color:#FFD700;margin-top:8px;opacity:0;text-align:center;transition:opacity 1s;}
+.word{opacity:0;display:inline-block;margin-right:4px;transition:0.4s;transform:translateY(20px);filter:drop-shadow(0 0 5px gold);}
+.word.show{opacity:1;transform:translateY(0);}
 
-.form{
-  max-width:600px;
-  margin:auto;
-  background:#fff;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.15);
-}
+/* Sparkles */
+.sparkle{position:absolute;font-size:18px;animation:sparkleMove 3s forwards;pointer-events:none;}
+@keyframes sparkleMove{0%{opacity:1;transform:translateY(0px) rotate(0deg);}100%{opacity:0;transform:translateY(-150px) rotate(360deg);}}
 
-.memory{
-  margin-bottom:20px;
-}
+#memories{display:none;position:absolute;inset:0;z-index:5;}
+.memoryImg{position:absolute;width:100px;border-radius:14px;opacity:0;transform:scale(0.5) rotate(0deg);transition:all 1s ease;}
 
-.memory label{
-  font-weight:600;
-  display:block;
-  margin-bottom:6px;
-}
+/* Cinematic pan/zoom */
+@keyframes zoomIn{from{transform:scale(1)}to{transform:scale(1.08)}}
+@keyframes zoomOut{from{transform:scale(1.08)}to{transform:scale(1)}}
+@keyframes panLeft{from{transform:translateX(0) scale(1)}to{transform:translateX(-8%) scale(1.05)}}
+@keyframes panRight{from{transform:translateX(0) scale(1)}to{transform:translateX(8%) scale(1.05)}}
+.zoomEffect{animation:zoomIn 4.5s forwards}
+.zoomOutEffect{animation:zoomOut 4.5s forwards}
+.panLeftEffect{animation:panLeft 4.5s forwards}
+.panRightEffect{animation:panRight 4.5s forwards}
 
-.memory input[type="file"]{
-  width:100%;
-}
+/* Fade out for slide */
+.fadeOut{animation:fadeOut 1s forwards}
+@keyframes fadeOut{to{opacity:0}}
 
-.memory textarea{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  resize:none;
-  font-size:14px;
+/* Start screen overlay */
+#startScreen{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);color:white;
+  display:flex;justify-content:center;align-items:center;font-size:24px;
+  cursor:pointer;z-index:10;text-align:center;padding:20px;
 }
-
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#ff4d6d;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-  margin-top:10px;
-}
-button:hover{opacity:0.9}
+#startScreen span{animation:blink 1.5s infinite;}
+@keyframes blink{0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
 </style>
 </head>
 <body>
 
-<h1>🎂 Create a Birthday Surprise</h1>
-<p>Upload memories & write a message for each 💖</p>
-
-<div class="form">
-  <form id="createForm">
-
-    <!-- 7 Memories -->
-    <div class="memory">
-      <label>Memory 1</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 2</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 3</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 4</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 5</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 6</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <div class="memory">
-      <label>Memory 7</label>
-      <input type="file" accept="image/*" required>
-      <textarea placeholder="Message for this memory ❤️" required></textarea>
-    </div>
-
-    <button type="submit">✨ Create Surprise</button>
-  </form>
+<!-- Start screen (auto appear) -->
+<div id="startScreen">
+  <div>
+    Tap anywhere to start the birthday surprise 🎂✨<br><span>👆</span>
+  </div>
 </div>
 
+<!-- Main Slideshow -->
+<div id="main" style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;">
+ <img id="photo">
+ <div id="quote"></div>
+ <div id="lyric"></div>
+</div>
+
+<!-- Flash Memories -->
+<div id="memories"></div>
+
+<audio id="music" src="song.mp3"></audio>
+
 <script>
-document.getElementById("createForm").addEventListener("submit", e=>{
-  e.preventDefault();
+// Slides + lyrics
+const slides=[
+ {img:"pic1.jpg",text:"Happy Birthday Madhumitha 🎂❤️", words:["En","iniya","madham..."], wordTimes:[0,0.5,1]},
+ {img:"pic2.jpg",text:"Nee irukkum podhu ellam azhaga irukku ✨", words:["Un","sirippu","en","manasa","thodudhu"], wordTimes:[0,0.4,0.8,1.2,1.6]},
+ {img:"pic3.jpg",text:"Indha Madhumitha Love Theme… unakkaga 🎶", words:["Uyire","uyire","madhumitha"], wordTimes:[0,0.5,1]},
+ {img:"pic4.jpg",text:"Un sirippu en manasa thodudhu 💖", words:["Un","kadhal","enakku","thevai"], wordTimes:[0,0.5,1,1.5]},
+ {img:"pic5.jpg",text:"May your life always bloom 🌸", words:["Poove","poove","madhumitha"], wordTimes:[0,0.5,1]},
+ {img:"pic6.jpg",text:"You make every moment special ❤️", words:["En","manadhil","un","vizhiyin","oligal"], wordTimes:[0,0.5,1,1.5,2]},
+ {img:"pic7.jpg",text:"Always stay this beautiful ✨", words:["Endrum","azhaga","iru","madhumitha"], wordTimes:[0,0.5,1,1.5]}
+];
 
-  const memories=[];
-  document.querySelectorAll(".memory").forEach(mem=>{
-    const file=mem.querySelector("input").files[0];
-    const msg=mem.querySelector("textarea").value;
+const main=document.getElementById("main");
+const photo=document.getElementById("photo");
+const quote=document.getElementById("quote");
+const lyric=document.getElementById("lyric");
+const memories=document.getElementById("memories");
+const music=document.getElementById("music");
+const startScreen=document.getElementById("startScreen");
 
-    const reader=new FileReader();
-    reader.onload=()=>{
-      memories.push({img:reader.result,message:msg});
-      if(memories.length===7){
-        sessionStorage.setItem("memories",JSON.stringify(memories));
-        window.location.href="surprise.html";
-      }
-    };
-    reader.readAsDataURL(file);
-  });
+let slideIndex=0;
+let wordTimeouts=[];
+
+// Sparkles
+function createSparkles(num){
+ for(let i=0;i<num;i++){
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.innerText=Math.random()<0.5?"✨":"🌸";
+  s.style.left=(Math.random()*80+10)+"%";
+  s.style.top="60%";
+  s.style.fontSize=(12+Math.random()*16)+"px";
+  s.style.animationDuration=(2+Math.random()*1.5)+"s";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),3000);
+ }
+}
+
+// Show slide
+function showSlide(){
+ if(slideIndex>=slides.length){setTimeout(showMemories,1000); return;}
+ const s = slides[slideIndex];
+ photo.src=s.img;
+ photo.style.opacity=0; quote.style.opacity=0; lyric.style.opacity=0;
+
+ setTimeout(()=>{photo.style.opacity=1; quote.style.opacity=1; lyric.style.opacity=1;},200);
+
+ lyric.innerHTML="";
+ s.words.forEach((w,i)=>{
+   const span=document.createElement("span");
+   span.className="word";
+   span.innerText=w;
+   lyric.appendChild(span);
+   wordTimeouts.push(setTimeout(()=>{span.classList.add("show");}, s.wordTimes[i]*1000));
+ });
+
+ photo.className="";
+const effects=["zoomEffect","zoomOutEffect","panLeftEffect","panRightEffect"];
+photo.classList.add(effects[Math.floor(Math.random()*effects.length)]);
+
+setTimeout(()=>{photo.className="fadeOut"},4000);
+slideIndex++;
+setTimeout(showSlide,4500);
+}
+
+// Flash memories elegant
+function showMemories(){
+ main.style.display="none";
+ memories.style.display="block";
+ memories.innerHTML="";
+ slides.forEach((s,i)=>{
+   const img=document.createElement("img");
+   img.src=s.img;
+   img.className="memoryImg";
+   img.style.left=Math.random()*70 + "vw";
+   img.style.top=Math.random()*60 + "vh";
+   img.style.transform=`scale(0.5) rotate(${Math.random()*0-0}deg)`;
+   memories.appendChild(img);
+   setTimeout(()=>{img.style.opacity=1; img.style.transform=`scale(1) rotate(${Math.random()*20-10}deg)`;}, i*300);
+ });
+ setTimeout(showFinal, slides.length*300+1500);
+}
+
+// Final message
+function showFinal(){
+ document.body.innerHTML=`
+  <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;color:white;text-align:center;">
+   <h1 style="font-size:clamp(28px,6vw,42px);opacity:0;animation:fadeInFinal 2s forwards;">Happy Birthday Madhumitha ❤️🎂</h1>
+   <p style="opacity:0;margin-top:10px;animation:fadeInFinal 2s 1s forwards;">You will always be special ✨</p>
+  </div>
+  <style>@keyframes fadeInFinal{to{opacity:1;}}</style>
+ `;
+}
+
+// Start interaction
+startScreen.addEventListener("click", ()=>{
+  startScreen.style.display="none";
+  music.play().catch(()=>{});
+  document.body.style.opacity=1;
+  createSparkles(20);
+  showSlide();
 });
 </script>
-
 </body>
 </html>
